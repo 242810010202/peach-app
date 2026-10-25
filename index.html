@@ -394,6 +394,100 @@ textarea {
     } catch (e) {}
 
     applySettings();
+    
+const diaryDate = document.getElementById("diary-date");
+const diaryTitle = document.getElementById("diary-title-input");
+const diaryContent = document.getElementById("diary-content");
+const diaryStatus = document.getElementById("diary-status");
+const diaryList = document.getElementById("diary-list");
+const saveDiaryButton = document.getElementById("save-diary");
+
+function getDiaries() {
+  try {
+    return JSON.parse(localStorage.getItem("peach-diaries") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function showDiaries() {
+  const diaries = getDiaries();
+  diaryList.replaceChildren();
+
+  if (diaries.length === 0) {
+    diaryList.textContent = "还没有日记，写下第一篇吧！";
+    return;
+  }
+
+  diaries.forEach((diary) => {
+    const entry = document.createElement("article");
+    entry.className = "diary-entry";
+
+    const heading = document.createElement("h3");
+    heading.textContent = diary.title || "无标题日记";
+
+    const date = document.createElement("p");
+    date.textContent = diary.date;
+
+    const content = document.createElement("p");
+    content.style.whiteSpace = "pre-wrap";
+    content.textContent = diary.content;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.textContent = "删除这篇日记";
+
+    deleteButton.addEventListener("click", () => {
+      if (!confirm("确定删除这篇日记吗？")) return;
+
+      const remaining = getDiaries().filter(
+        (item) => item.id !== diary.id
+      );
+
+      localStorage.setItem("peach-diaries", JSON.stringify(remaining));
+      showDiaries();
+      diaryStatus.textContent = "日记已删除。";
+    });
+
+    entry.append(heading, date, content, deleteButton);
+    diaryList.append(entry);
+  });
+}
+
+if (diaryDate && diaryTitle && diaryContent &&
+    diaryStatus && diaryList && saveDiaryButton) {
+  diaryDate.value = new Date().toLocaleDateString("en-CA");
+
+  saveDiaryButton.addEventListener("click", () => {
+    const content = diaryContent.value.trim();
+
+    if (!content) {
+      diaryStatus.textContent = "先写一点日记内容再保存吧。";
+      return;
+    }
+
+    const diaries = getDiaries();
+
+    diaries.unshift({
+      id: Date.now().toString(),
+      date: diaryDate.value,
+      title: diaryTitle.value.trim(),
+      content: content
+    });
+
+    try {
+      localStorage.setItem("peach-diaries", JSON.stringify(diaries));
+      diaryTitle.value = "";
+      diaryContent.value = "";
+      diaryStatus.textContent = "日记保存成功！";
+      showDiaries();
+    } catch (error) {
+      diaryStatus.textContent = "保存失败，请检查浏览器存储空间设置。";
+    }
+  });
+
+  showDiaries();
+}
   </script>
 </body>
 </html>
