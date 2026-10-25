@@ -441,6 +441,7 @@ editButton.addEventListener("click", () => {
   diaryDate.value = diary.date;
   diaryTitle.value = diary.title || "";
   diaryContent.value = diary.content;
+  saveDiaryButton.dataset.editingId = diary.id;
   diaryStatus.textContent = "修改完成后，点击“保存日记”。";
   diaryTitle.focus();
 });
@@ -465,6 +466,7 @@ editButton.addEventListener("click", () => {
   });
 }
 
+
 if (diaryDate && diaryTitle && diaryContent &&
     diaryStatus && diaryList && saveDiaryButton) {
   diaryDate.value = new Date().toLocaleDateString("en-CA");
@@ -478,47 +480,36 @@ if (diaryDate && diaryTitle && diaryContent &&
     }
 
     const diaries = getDiaries();
-const editingDiaryId = saveDiaryButton.dataset.editingId;
+    const editingDiaryId = saveDiaryButton.dataset.editingId;
 
-if (editingDiaryId) {
-  const index = diaries.findIndex(
-    (item) => item.id === editingDiaryId
-  );
+    if (editingDiaryId) {
+      const index = diaries.findIndex(
+        (item) => item.id === editingDiaryId
+      );
 
-  if (index !== -1) {
-    diaries[index] = {
-      ...diaries[index],
-      date: diaryDate.value,
-      title: diaryTitle.value.trim(),
-      content: content
-    };
-  }
-} else {
-  diaries.unshift({
-    id: Date.now().toString(),
-    date: diaryDate.value,
-    title: diaryTitle.value.trim(),
-    content: content
-  });
-}
+      if (index !== -1) {
+        diaries[index] = {
+          ...diaries[index],
+          date: diaryDate.value,
+          title: diaryTitle.value.trim(),
+          content: content
+        };
+      }
+    } else {
+      diaries.unshift({
+        id: Date.now().toString(),
+        date: diaryDate.value,
+        title: diaryTitle.value.trim(),
+        content: content
+      });
+    }
 
     try {
       localStorage.setItem("peach-diaries", JSON.stringify(diaries));
       diaryTitle.value = "";
       diaryContent.value = "";
-      
-if (editingDiaryId) {
-  const index = diaries.findIndex(
-    (item) => item.id === editingDiaryId
-  );
-
-  if (index !== -1) {
-    diaries[index] = {
-      ...diaries[index],
-      date: diaryDate.value,
-      title: diaryTitle.value.trim(),
       diaryDate.value = new Date().toLocaleDateString("en-CA");
-saveDiaryButton.dataset.editingId = "";
+      saveDiaryButton.dataset.editingId = "";
       diaryStatus.textContent = "日记保存成功！";
       showDiaries();
     } catch (error) {
