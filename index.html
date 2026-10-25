@@ -433,6 +433,17 @@ function showDiaries() {
     content.style.whiteSpace = "pre-wrap";
     content.textContent = diary.content;
 
+const editButton = document.createElement("button");
+editButton.type = "button";
+editButton.textContent = "编辑这篇日记";
+
+editButton.addEventListener("click", () => {
+  diaryDate.value = diary.date;
+  diaryTitle.value = diary.title || "";
+  diaryContent.value = diary.content;
+  diaryStatus.textContent = "修改完成后，点击“保存日记”。";
+  diaryTitle.focus();
+});
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.textContent = "删除这篇日记";
@@ -449,7 +460,7 @@ function showDiaries() {
       diaryStatus.textContent = "日记已删除。";
     });
 
-    entry.append(heading, date, content, deleteButton);
+   entry.append(heading, date, content, editButton, deleteButton);
     diaryList.append(entry);
   });
 }
@@ -467,18 +478,47 @@ if (diaryDate && diaryTitle && diaryContent &&
     }
 
     const diaries = getDiaries();
+const editingDiaryId = saveDiaryButton.dataset.editingId;
 
-    diaries.unshift({
-      id: Date.now().toString(),
+if (editingDiaryId) {
+  const index = diaries.findIndex(
+    (item) => item.id === editingDiaryId
+  );
+
+  if (index !== -1) {
+    diaries[index] = {
+      ...diaries[index],
       date: diaryDate.value,
       title: diaryTitle.value.trim(),
       content: content
-    });
+    };
+  }
+} else {
+  diaries.unshift({
+    id: Date.now().toString(),
+    date: diaryDate.value,
+    title: diaryTitle.value.trim(),
+    content: content
+  });
+}
 
     try {
       localStorage.setItem("peach-diaries", JSON.stringify(diaries));
       diaryTitle.value = "";
       diaryContent.value = "";
+      
+if (editingDiaryId) {
+  const index = diaries.findIndex(
+    (item) => item.id === editingDiaryId
+  );
+
+  if (index !== -1) {
+    diaries[index] = {
+      ...diaries[index],
+      date: diaryDate.value,
+      title: diaryTitle.value.trim(),
+      diaryDate.value = new Date().toLocaleDateString("en-CA");
+saveDiaryButton.dataset.editingId = "";
       diaryStatus.textContent = "日记保存成功！";
       showDiaries();
     } catch (error) {
