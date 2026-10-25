@@ -1,45 +1,345 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>桃子的秘密基地</title>
+  <title>Peach's Space</title>
   <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #ffffff;
+      --card: #f6f6f6;
+      --text: #222222;
+      --muted: #777777;
+      --line: #e8e8e8;
+      --accent: #222222;
+      --button-text: #ffffff;
+    }
+
+    body[data-theme="cream"] {
+      --bg: #faf7f0;
+      --card: #f0eadf;
+      --text: #51483d;
+      --muted: #897e70;
+      --line: #e7dfd2;
+      --accent: #8a7964;
+      --button-text: #ffffff;
+    }
+
+    body[data-theme="tech"] {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #172b4d;
+      --muted: #65758b;
+      --line: #dce5f0;
+      --accent: #3569dc;
+      --button-text: #ffffff;
+    }
+
     body {
-      background: #fff0f5;
-      color: #75445a;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 60px 20px;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      transition: background .2s, color .2s;
     }
-    .home {
-      background: white;
-      padding: 30px;
-      border-radius: 24px;
-      max-width: 420px;
+
+    .container {
+      width: min(760px, 100%);
       margin: auto;
-      box-shadow: 0 4px 20px #e8bfd0;
+      padding: 28px 20px 50px;
     }
-    h1 {
-      color: #e783a8;
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
     }
-    button {
-      background: #f3a6c2;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 20px;
-      font-size: 16px;
+
+    .logo { font-size: 20px; font-weight: 700; }
+    .small { color: var(--muted); font-size: 13px; }
+
+    .hero { padding: 54px 0 34px; }
+    .eyebrow {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    h1 { font-size: clamp(30px, 7vw, 44px); margin: 14px 0; }
+    p { line-height: 1.8; }
+    .muted { color: var(--muted); }
+
+    .settings {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .settings h2 { font-size: 17px; margin-top: 0; }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label { display: block; font-size: 13px; margin-bottom: 8px; }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      min-height: 145px;
+    }
+
+    .card-icon { font-size: 24px; }
+    .card h2 { font-size: 17px; margin: 16px 0 6px; }
+    .card p { font-size: 13px; margin-bottom: 0; }
+
+    .main-button {
+      display: block;
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      background: var(--accent);
+      color: var(--button-text);
+      border: 0;
+      border-radius: 12px;
+      font-size: 15px;
       cursor: pointer;
+    }
+
+    .notice {
+      display: none;
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 36px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .fields, .cards { grid-template-columns: 1fr; }
+      .hero { padding-top: 38px; }
     }
   </style>
 </head>
-<body>
-  <div class="home">
-    <h1>🍑 欢迎来到桃子的秘密基地！</h1>
-    <p>这里是属于桃子的小小世界。</p >
-    <p>今天也要开心一点呀！</p >
-    <button onclick="alert('欢迎回家，桃子！💗')">进入基地</button>
+<body data-theme="white">
+  <div class="container">
+    <header>
+      <div class="logo" id="logo">Peach's Space</div>
+      <div class="small" id="edition">MY PERSONAL SPACE</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow" id="eyebrow">A PLACE OF MY OWN</div>
+        <h1 id="welcome">欢迎回来。</h1>
+        <p class="muted" id="intro">这里是属于你自己的小小空间。</p >
+      </section>
+
+      <section class="settings">
+        <h2 id="settings-title">自定义你的空间</h2>
+        <div class="fields">
+          <div>
+            <label for="theme" id="theme-label">页面风格</label>
+            <select id="theme">
+              <option value="white">纯白极简</option>
+              <option value="cream">温柔奶白</option>
+              <option value="tech">现代科技</option>
+            </select>
+          </div>
+          <div>
+            <label for="language" id="language-label">显示语言</label>
+            <select id="language">
+              <option value="zh">中文</option>
+              <option value="mix">English + 中文</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="cards">
+        <article class="card">
+          <div class="card-icon">✎</div>
+          <h2 id="diary-title">我的日记</h2>
+          <p class="muted" id="diary-desc">记录今天的想法与心情。</p >
+        </article>
+        <article class="card">
+          <div class="card-icon">✓</div>
+          <h2 id="todo-title">待办事项</h2>
+          <p class="muted" id="todo-desc">把想做的事情，一件件完成。</p >
+        </article>
+      </section>
+
+      <button class="main-button" id="enter">进入我的空间 →</button>
+      <div class="notice" id="notice" role="status"></div>
+    </main>
+
+    <footer id="footer">简约 · 安静 · 属于自己</footer>
   </div>
+
+  <script>
+    const translations = {
+      zh: {
+        edition: "我的个人空间",
+        eyebrow: "属于自己的小天地",
+        welcome: "欢迎回来。",
+        intro: "这里是属于你自己的小小空间。",
+        settings: "自定义你的空间",
+        theme: "页面风格",
+        language: "显示语言",
+        themes: ["纯白极简", "温柔奶白", "现代科技"],
+        languages: ["中文", "英文标题 + 中文内容", "全英文"],
+        diary: "我的日记",
+        diaryDesc: "记录今天的想法与心情。",
+        todo: "待办事项",
+        todoDesc: "把想做的事情，一件件完成。",
+        enter: "进入我的空间 →",
+        notice: "欢迎回家！这里是属于你的秘密基地。",
+        footer: "简约 · 安静 · 属于自己"
+      },
+      mix: {
+        edition: "MY PERSONAL SPACE",
+        eyebrow: "A PLACE OF MY OWN",
+        welcome: "欢迎回来。",
+        intro: "这里是属于你自己的小小空间。",
+        settings: "Customize Your Space",
+        theme: "页面风格 / Theme",
+        language: "显示语言 / Language",
+        themes: ["纯白极简", "温柔奶白", "现代科技"],
+        languages: ["中文", "English + 中文", "English"],
+        diary: "My Diary",
+        diaryDesc: "记录今天的想法与心情。",
+        todo: "To-do List",
+        todoDesc: "把想做的事情，一件件完成。",
+        enter: "进入我的空间 →",
+        notice: "欢迎回家！这里是属于你的秘密基地。",
+        footer: "Simple · Calm · Yours"
+      },
+      en: {
+        edition: "MY PERSONAL SPACE",
+        eyebrow: "A PLACE OF MY OWN",
+        welcome: "Welcome back.",
+        intro: "A little space that belongs to you.",
+        settings: "Customize Your Space",
+        theme: "Appearance",
+        language: "Language",
+        themes: ["Pure Minimal", "Warm Cream", "Modern Tech"],
+        languages: ["Chinese", "English + Chinese", "English"],
+        diary: "My Diary",
+        diaryDesc: "Capture your thoughts and feelings.",
+        todo: "To-do List",
+        todoDesc: "Make progress, one step at a time.",
+        enter: "Enter My Space →",
+        notice: "Welcome home! This is your own little space.",
+        footer: "Simple · Calm · Yours"
+      }
+    };
+
+    const ids = {
+      edition: "edition",
+      eyebrow: "eyebrow",
+      welcome: "welcome",
+      intro: "intro",
+      settings: "settings-title",
+      theme: "theme-label",
+      language: "language-label",
+      diary: "diary-title",
+      diaryDesc: "diary-desc",
+      todo: "todo-title",
+      todoDesc: "todo-desc",
+      enter: "enter",
+      footer: "footer"
+    };
+
+    const themeSelect = document.getElementById("theme");
+    const languageSelect = document.getElementById("language");
+
+    function applySettings() {
+      const theme = themeSelect.value;
+      const lang = languageSelect.value;
+      const t = translations[lang];
+
+      document.body.dataset.theme = theme;
+      document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+
+      Object.keys(ids).forEach(key => {
+        document.getElementById(ids[key]).textContent =
+          key === "settings" ? t.settings :
+          key === "theme" ? t.theme :
+          key === "language" ? t.language : t[key];
+      });
+
+      const themeOptions = themeSelect.options;
+      t.themes.forEach((name, i) => themeOptions[i].textContent = name);
+
+      const languageOptions = languageSelect.options;
+      t.languages.forEach((name, i) => languageOptions[i].textContent = name);
+
+      document.getElementById("notice").style.display = "none";
+
+      try {
+        localStorage.setItem("peach-theme", theme);
+        localStorage.setItem("peach-language", lang);
+      } catch (e) {}
+    }
+
+    themeSelect.addEventListener("change", applySettings);
+    languageSelect.addEventListener("change", applySettings);
+
+    document.getElementById("enter").addEventListener("click", () => {
+      const lang = languageSelect.value;
+      document.getElementById("notice").textContent =
+        translations[lang].notice;
+      document.getElementById("notice").style.display = "block";
+    });
+
+    try {
+      const savedTheme = localStorage.getItem("peach-theme");
+      const savedLanguage = localStorage.getItem("peach-language");
+
+      if (["white", "cream", "tech"].includes(savedTheme)) {
+        themeSelect.value = savedTheme;
+      }
+      if (["zh", "mix", "en"].includes(savedLanguage)) {
+        languageSelect.value = savedLanguage;
+      }
+    } catch (e) {}
+
+    applySettings();
+  </script>
 </body>
 </html>
