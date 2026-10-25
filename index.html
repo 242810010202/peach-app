@@ -153,6 +153,35 @@
       .fields, .cards { grid-template-columns: 1fr; }
       .hero { padding-top: 38px; }
     }
+    
+input, textarea {
+  display: block;
+  width: 100%;
+  margin: 8px 0 18px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.diary-entry {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+.diary-entry button {
+  margin-top: 10px;
+}
   </style>
 </head>
 <body data-theme="white">
@@ -205,6 +234,31 @@
       </section>
 
       <button class="main-button" id="enter">进入我的空间 →</button>
+      
+<section class="settings" id="diary-panel">
+  <h2>我的私人日记</h2>
+  <p class="muted">把今天的心情和想法留在这里。</p >
+
+  <label for="diary-date">日期</label>
+  <input id="diary-date" type="date">
+
+  <label for="diary-title-input">日记标题</label>
+  <input id="diary-title-input" type="text"
+         placeholder="今天想记录什么？">
+
+  <label for="diary-content">日记内容</label>
+  <textarea id="diary-content" rows="7"
+            placeholder="写下今天的故事……"></textarea>
+
+  <button class="main-button" id="save-diary" type="button">
+    保存日记
+  </button>
+
+  <p id="diary-status" class="muted" role="status"></p >
+
+  <h2>以前的日记</h2>
+  <div id="diary-list"></div>
+</section>
       <div class="notice" id="notice" role="status"></div>
     </main>
 
